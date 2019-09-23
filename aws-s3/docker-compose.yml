@@ -1,0 +1,23 @@
+version: "3"
+
+
+services:
+  aws-s3:
+    image: localstack/localstack
+    container_name: aws-s3
+    ports:
+      - "4572:4572"
+    environment:
+      - SERVICES=s3:4572
+      - USE_SSL=true
+  client:
+    image: ubuntu-client-aws
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: client
+    stdin_open: true
+    tty: true
+    cap_add:
+      - NET_ADMIN
+
