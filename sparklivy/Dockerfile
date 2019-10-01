@@ -43,7 +43,6 @@ RUN rm $SPARK_VERSION_STRING.tgz
 
 # Install Livy
 ENV PYTHONPATH "$PYTHONPATH:$SPARK_HOME/python:`echo $SPARK_HOME/python/lib/py4j*-src.zip`"
-
 ENV LIVY_DOWNLOAD_URL http://apache.claz.org/incubator/livy/$LIVY_VERSION/apache-$LIVY_VERSION_STRING.zip
 RUN mkdir -p $HADOOP_CONF_HOME
 RUN mkdir -p $LIVY_HOME
@@ -80,12 +79,16 @@ RUN sed -i -e 's/spark.jars.packages=com.amazonaws:aws-java-sdk-pom:1.10.34,org.
 # Configure AWS CLI
 RUN apt install awscli -y
 
-ENV LOCAL_S3_PORT=${LOCAL_S3_PORT:-4572}
-ENV AWS_CONTAINER_NAME=${AWS_CONTAINER_NAME:-aws-s3}
+ENV LOCALSTACK_DOCKER_NAME=${AWS_CONTAINER_NAME:-aws-s3}
+ENV LOCALSTACK_S3_PORT=${LOCALSTACK_S3_PORT:-4572}
 ENV AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-foobar}
 ENV AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-foobar}
+ENV AWS_SSL_ENABLED=${AWS_SSL_ENABLED:-false}
 
 EXPOSE 8998
+
+# Install ping for entrypoint
+RUN apt install iptables iputils-ping awscli -y
 
 ENTRYPOINT ["sh"]
 ADD entrypoint.sh /app
