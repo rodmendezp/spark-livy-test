@@ -7,5 +7,6 @@ Spark Version: 2.4.4
 Livy: 0.6.0
 
 TODO:
+ - [ ] [30/09] Create alias for aws-cli to avoid having to enter --endpoint-url=...
  - [ ] [30/09] Allow using SSL Enabled
  - [ ] [30/09] Use iptables to redirect aws-cli request
